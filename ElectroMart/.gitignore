@@ -1,0 +1,22 @@
+# Ignore build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Dd]ist/
+[Dd]evelopment/
+[Dd]eployment/
+bin/
+obj/
+
+# User-specific files
+.idea/
+.vs/
+.vscode/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# ASP.NET Core files
+appsettings.json
+appsettings.Development.json
+appsettings.Production.json

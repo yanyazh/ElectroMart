@@ -1,0 +1,70 @@
+﻿@model myStore.Models.ProductPageViewModel
+
+@{
+    ViewData["Title"] = "Products";
+}
+
+<h2>Product List</h2>
+<a asp-action="Create" class="btn btn-primary">Add New Product</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th>Manage</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var product in Model.Products)
+        {
+            <tr>
+                <td>
+                    @if (!string.IsNullOrEmpty(product.ImagePath))
+                    {
+                        <img src="@product.ImagePath" alt="@product.Name" width="100" height="100" />
+                    }
+                    else
+                    {
+                        <img src="/stockImages/noImage.png" alt="No Image Available" width="100" height="100" />
+                    }
+                </td>
+                <td>@product.Name</td>
+
+                <!-- Display the Category Name -->
+                <td>@product.Category?.Name</td>
+
+                <!-- Handle missing description -->
+                <td>
+                    @if (string.IsNullOrEmpty(product.Description))
+                    {
+                        <span>No description available</span>
+                    }
+                    else
+                    {
+                        <span>@(product.Description.Length > 50 ? product.Description.Substring(0, 50) + "..." : product.Description)</span>
+                    }
+                </td>
+
+                <td>@product.Price</td>
+                <td>
+                    @if (product.Stock > 0)
+                    {
+                        <span class="inStock">In Stock</span>
+                    }
+                    else
+                    {
+                        <span class="outOfStock">Out of Stock</span>
+                    }
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@product.Id" class="btn btn-primary">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@product.Id" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,14 @@
+﻿@model myStore.Models.News
+
+@{
+    ViewData["Title"] = "Article";
+}
+
+<h2>@Model.Title</h2>
+<p><small>Published on: @Model.PublishedDate.ToString("MM/dd/yyyy")</small></p>
+@if (!string.IsNullOrEmpty(Model.ImagePath))
+{
+    <img src="@Model.ImagePath" alt="@Model.Title" style="width:100%;height:auto;" />
+}
+<p>@Model.Content</p>
+<a asp-action="Index" asp-controller="Home">Back to Home Page</a>

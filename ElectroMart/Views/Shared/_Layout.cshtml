@@ -1,0 +1,99 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ElectroMart</title>
+    <link rel="icon" href="~/liberty.jpg">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/myStore.styles.css" asp-append-version="true" />
+</head>
+<body>
+    <header>
+        <nav class="container-fluid navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-xxl">
+                <div class="container" style="width: 100%; padding-left: 0; padding-right: 0;">
+
+                    <!-- Left Side - Links -->
+                    <div class="collapse navbar-collapse" style="width: 40%">
+                        <ul class="navbar-nav me-auto">
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" style="padding-left: 0" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="Index">Products</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="Index">Categories</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="News" asp-action="Index">News</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Center - Logo and Brand Name -->
+                    <div class="navbar-brand mx-auto d-flex align-items-center" style="margin: auto; width: 20%;">
+                        <div class="navbar-brand mx-auto d-flex align-items-center">
+                            <img src="~/liberty.png" height="50" class="d-inline-block align-top" alt="Logo" style="margin-right: 10px;">
+                            <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ElectroMart</a>
+                        
+                        </div>
+                        
+                    </div>
+
+                    <!-- Right Side - Search -->
+                    <div class="collapse navbar-collapse justify-content-end" style="width: 40%">
+                        <form class="d-flex" role="search">
+                            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                            <button style="margin-right: 10px" class="btn btn-outline-success" type="submit">Search</button>
+
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <!-- Logout Form -->
+                                <form asp-action="Logout" asp-controller="Account" method="post" style="display:inline;">
+                                    <button style="margin-right: 10px" class="btn btn-outline-success" type="submit">
+                                        Logout
+                                    </button>
+                                </form>
+                            }
+                            else
+                            {
+                                <button style="margin-right: 10px" class="btn btn-outline-success" type="submit">
+                                    <a asp-action="Login" asp-controller="Account" class="nav-link">Login</a>
+                                </button>
+                                <button style="margin-right: 10px" class="btn btn-outline-success" type="submit">
+                                    <a asp-action="Register" asp-controller="Account" class="nav-link">Register</a>
+                                </button>
+                            }
+                        </form>
+                    </div>
+
+
+                </div>
+            </div>
+            
+        </nav>
+    </header>
+
+    <div class="container" style="min-width: 90%; justify-content: center; margin-bottom: 150px;">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2025 - ElectroMart - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

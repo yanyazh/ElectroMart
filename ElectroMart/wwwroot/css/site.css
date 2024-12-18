@@ -1,0 +1,106 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+
+}
+
+h2 {
+
+}
+
+.inStock{
+    color: green;
+}
+
+.outOfStock{
+    color: red;
+}
+
+td {
+    padding-right: 70px;
+    padding-left: 15px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    /*    border: 1px solid black;*/
+}
+
+th {
+    color: white;
+    padding-left: 15px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    /*    border: 1px solid black;*/
+}
+
+tr {
+    
+    border: 1px solid black;
+}
+
+thead {
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    background-color: rebeccapurple;
+}
+
+btn-primary {
+    background-color: rebeccapurple;
+}
+
+/* Optional additional CSS */
+
+.container {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+}
+
+.sidebar, .news-bar {
+    flex-shrink: 0;
+}
+
+.products {
+    flex-grow: 1;
+}
+
+.product-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.card {
+    width: 100%;
+    max-width: 260px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.news-item {
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+    .news-item h4 {
+        font-size: 1.1em;
+    }

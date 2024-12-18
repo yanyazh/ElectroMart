@@ -1,0 +1,30 @@
+﻿@model IEnumerable<myStore.Models.News>
+
+@{
+    ViewData["Title"] = "Articles";
+}
+
+<h2>News</h2>
+<a asp-action="Create" class="btn btn-primary">Add News Article</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Published Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var news in Model)
+        {
+            <tr>
+                <td>@news.Title</td>
+                <td>@news.PublishedDate.ToString("MM/dd/yyyy")</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@news.Id" class="btn btn-warning btn-sm">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@news.Id" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

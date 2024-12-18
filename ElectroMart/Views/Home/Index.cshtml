@@ -1,0 +1,104 @@
+﻿@model myStore.Models.ProductPageViewModel
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="container-sm" style="width: 100%; display: flex; justify-content: space-between;">
+    <!-- Categories Sidebar -->
+    <aside class="sidebar" style="width: 15%; border-right: 1px solid #ddd; padding-right: 20px;">
+        <h2>Categories</h2>
+        <form id="categoryForm" method="get" action="@Url.Action("Index", "Home")">
+            <input type="hidden" name="categoryId" id="categoryId" value="" />
+            <ul class="category-list">
+                @foreach (var category in Model.Categories)
+                {
+                    <li>
+                        <a href="javascript:void(0);" onclick="setCategoryId(@category.Category.Id)">
+                            @category.Category.Name
+                        </a>
+                        <span style="color: grey;"><i>@category.ProductCount</i></span>
+                    </li>
+                }
+            </ul>
+        </form>
+
+    </aside>
+
+    <!-- Products Section -->
+    <main class="products" style="min-width: 70%; padding: 0 20px;">
+        <h2>Featured Products</h2>
+
+        <!-- Search Bar -->
+        <form method="get" action="@Url.Action("Index", "Home")">
+            <form method="get" action="@Url.Action("Index", "Home")">
+                <input type="text" name="searchString" placeholder="Search products..." value="@Context.Request.Query["searchString"]" style="width: 100%; padding: 8px; margin-bottom: 20px; border: 1px solid #ccc;" />
+                <button type="submit" class="btn btn-primary" style="width: 100%;">Search</button>
+            </form>
+        </form>
+
+        <div class="product-cards" style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: space-around;">
+            <!-- Displaying Products from Model.Products -->
+            @foreach (var product in Model.Products)
+            {
+                <div class="card" style="margin-top: 20px; border: 1px solid #ddd; padding: 10px; width: 100%;">
+                    @if (!string.IsNullOrEmpty(product.ImagePath))
+                    {
+                        <img src="@product.ImagePath" alt="@product.Name" style="width:100%; aspect-ratio: 1 / 1;" />
+                    }
+                    else
+                    {
+                        <img src="/stockImages/noImage.png" alt="No Image" style="width:100%; height:100%;" />
+                    }
+                    <h4>@product.Name</h4>
+                    @{
+                        if (product.Stock > 0)
+                        {
+                            <p class="inStock">In Stock</p>
+                        }
+                        else
+                        {
+                            <p class="outOfStock">Out of Stock</p>
+                        }
+                    }
+                    <p>@(string.IsNullOrEmpty(product.Description) ? "No description available" : (product.Description.Length > 20 ? product.Description.Substring(0, 20) + "..." : product.Description))</p>
+                    <p><strong>Price:</strong> @product.Price.ToString() zł</p>
+                    <a asp-action="Details" asp-controller="Products" asp-route-id="@product.Id" class="btn btn-primary">View Details</a>
+                </div>
+            }
+        </div>
+    </main>
+
+    <!-- News Sidebar -->
+    <aside class="news-bar" style="width: 15%; border-left: 1px solid #ddd; padding-left: 20px;">
+        <h2>Latest News</h2>
+        <div class="news-items">
+            <!-- Displaying News from Model.RecentNews -->
+            @foreach (var news in Model.RecentNews)
+            {
+                <div class="news-item" style="display: block; margin-left: auto;margin-right: auto; margin-bottom: 20px; margin-top: 20px; width: 100%; max-width: 250px;">
+                    <h4>@news.Title</h4>
+                    <p><small>@news.PublishedDate.ToString("MM/dd/yyyy")</small></p>
+                    <p>@news.Content.Substring(0, Math.Min(news.Content.Length, 100))...</p>
+                    @if (!string.IsNullOrEmpty(news.ImagePath))
+                    {
+                        <img src="@news.ImagePath" alt="@news.Title" style="width:100%; height:auto;" />
+                    }
+                    <br />
+                    <a asp-action="Details" asp-controller="News" asp-route-id="@news.Id">Read More</a>
+                </div>
+            }
+        </div>
+    </aside>
+</div>
+
+
+@section Scripts {
+    <script>
+        function setCategoryId(categoryId) {
+            $('#categoryId').val(categoryId);  // Set the categoryId to the hidden input field
+            $('#categoryForm').submit();        // Submit the form
+        }
+    </script>
+
+}
