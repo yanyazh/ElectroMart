@@ -7,7 +7,6 @@ namespace myStore.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    //[Route("[controller]")]
     public class ProductsApiController : ControllerBase
     {
         private readonly ECommerceContext _context;
@@ -36,21 +35,6 @@ namespace myStore.Controllers
 
             return Ok(products);
         }
-        //[HttpGet]
-        //public IActionResult GetCategories()
-        //{
-        //    var categories = _context.Categories
-        //        //.Include(p => p.Category)
-        //        .Select(p => new
-        //        {
-        //            p.Id,
-        //            p.Name,
-        //            p.ImagePath,
-        //        }).ToList();
-
-        //    return Ok(categories);
-        //}
-
 
         // GET: api/products/{id}
         [HttpGet("{id}")]
