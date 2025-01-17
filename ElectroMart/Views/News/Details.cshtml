@@ -3,12 +3,15 @@
 @{
     ViewData["Title"] = "Article";
 }
+<div style="display: inline-block">
+    <h2>@Model.Title</h2>
+    <p><small>Published on: @Model.PublishedDate.ToString("MM/dd/yyyy")</small></p>
+    @if (!string.IsNullOrEmpty(Model.ImagePath))
+    {
+        <img src="@Model.ImagePath" alt="@Model.Title" style="width:100%;height:auto;" />
+    }
+    <p>@Model.Content</p>
+    <a asp-action="Index" asp-controller="" class="btn btn-secondary mt-3" style="margin-bottom: 15px">Back to Main Page</a>
+    <br />
+</div>
 
-<h2>@Model.Title</h2>
-<p><small>Published on: @Model.PublishedDate.ToString("MM/dd/yyyy")</small></p>
-@if (!string.IsNullOrEmpty(Model.ImagePath))
-{
-    <img src="@Model.ImagePath" alt="@Model.Title" style="width:100%;height:auto;" />
-}
-<p>@Model.Content</p>
-<a asp-action="Index" asp-controller="Home">Back to Home Page</a>

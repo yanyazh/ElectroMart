@@ -31,10 +31,8 @@
 
         <!-- Search Bar -->
         <form method="get" action="@Url.Action("Index", "Home")">
-            <form method="get" action="@Url.Action("Index", "Home")">
-                <input type="text" name="searchString" placeholder="Search products..." value="@Context.Request.Query["searchString"]" style="width: 100%; padding: 8px; margin-bottom: 20px; border: 1px solid #ccc;" />
-                <button type="submit" class="btn btn-primary" style="width: 100%;">Search</button>
-            </form>
+            <input type="text" name="searchString" placeholder="Search products..." value="@Context.Request.Query["searchString"]" style="width: 100%; padding: 8px; margin-bottom: 20px; border: 1px solid #ccc;" />
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Search</button>
         </form>
 
         <div class="product-cards" style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: space-around;">
@@ -44,11 +42,15 @@
                 <div class="card" style="margin-top: 20px; border: 1px solid #ddd; padding: 10px; width: 100%;">
                     @if (!string.IsNullOrEmpty(product.ImagePath))
                     {
-                        <img src="@product.ImagePath" alt="@product.Name" style="width:100%; aspect-ratio: 1 / 1;" />
+                        <div style="width: 100%; aspect-ratio: 1 / 1; overflow: hidden;">
+                            <img src="@product.ImagePath" alt="@product.Name" style="width: 100%; height: 100%; object-fit: cover;" />
+                        </div>
                     }
                     else
                     {
-                        <img src="/stockImages/noImage.png" alt="No Image" style="width:100%; height:100%;" />
+                        <div style="width: 100%; aspect-ratio: 1 / 1; overflow: hidden;">
+                            <img src="/stockImages/noImage.png" alt="No Image" style="width: 100%; height: 100%; object-fit: cover;" />
+                        </div>
                     }
                     <h4>@product.Name</h4>
                     @{
@@ -68,6 +70,7 @@
             }
         </div>
     </main>
+
 
     <!-- News Sidebar -->
     <aside class="news-bar" style="width: 15%; border-left: 1px solid #ddd; padding-left: 20px;">

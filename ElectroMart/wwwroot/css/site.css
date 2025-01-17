@@ -58,11 +58,11 @@ tr {
 thead {
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
-    background-color: rebeccapurple;
+    background-color: #0D6EFD;
 }
 
 btn-primary {
-    background-color: rebeccapurple;
+    background-color: #0D6EFD;
 }
 
 /* Optional additional CSS */

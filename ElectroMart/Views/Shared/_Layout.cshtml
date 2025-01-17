@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - ElectroMart</title>
-    <link rel="icon" href="~/liberty.jpg">
+    <link rel="icon" href="~/ElectroMart.png">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/myStore.styles.css" asp-append-version="true" />
@@ -39,7 +39,7 @@
                     <!-- Center - Logo and Brand Name -->
                     <div class="navbar-brand mx-auto d-flex align-items-center" style="margin: auto; width: 20%;">
                         <div class="navbar-brand mx-auto d-flex align-items-center">
-                            <img src="~/liberty.png" height="50" class="d-inline-block align-top" alt="Logo" style="margin-right: 10px;">
+                            <img src="~/ElectroMart.png" height="50" class="d-inline-block align-top" alt="Logo" style="margin-right: 10px;">
                             <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">ElectroMart</a>
                         
                         </div>
@@ -60,6 +60,9 @@
                                         Logout
                                     </button>
                                 </form>
+                                <button style="margin-right: 10px" class="btn btn-outline-success" type="submit">
+                                    <a asp-action="Login" asp-controller="Account" class="nav-link">Login</a>
+                                </button>
                             }
                             else
                             {
@@ -81,14 +84,14 @@
     </header>
 
     <div class="container" style="min-width: 90%; justify-content: center; margin-bottom: 150px;">
-        <main role="main" class="pb-3">
+        <main role="main" class="pb-3" style="min-width: 100%">
             @RenderBody()
         </main>
     </div>
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2025 - ElectroMart - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2025 - ElectroMart - BackEnd made by Yan Yazh<a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

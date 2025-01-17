@@ -1,11 +1,23 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using myStore.Models;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+    });
+
+// Enable API controllers
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+    });
 
 // Configure the database context with Identity
 builder.Services.AddDbContext<ECommerceContext>(options =>
@@ -23,7 +35,21 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 .AddEntityFrameworkStores<ECommerceContext>()
 .AddDefaultTokenProviders();
 
-// Authentication and Authorization middleware is automatically configured by AddIdentity()
+// Enable CORS to allow your React frontend to communicate with the backend
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReactApp", policy =>
+    {
+        policy.WithOrigins("http://localhost:3000") // Replace with your React app's URL
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
+// Add Swagger for API documentation
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -41,9 +67,26 @@ app.UseRouting();
 app.UseAuthentication();  // Use authentication middleware
 app.UseAuthorization();   // Use authorization middleware
 
+// Enable Swagger middleware
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+    });
+
+}
+
+// Enable CORS for API endpoints
+app.UseCors("AllowReactApp");
+
 // Configure default route for MVC
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+// Map API endpoints
+app.MapControllers();
 
 app.Run();

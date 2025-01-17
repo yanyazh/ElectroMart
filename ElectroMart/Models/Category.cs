@@ -7,6 +7,8 @@ namespace myStore.Models
         public int Id { get; set; }
         public required string Name { get; set; }  // Category name
 
+        public string? ImagePath { get; set; }
+
         // Navigation property
         public ICollection<Product> Products { get; set; } = new List<Product>();
     }
