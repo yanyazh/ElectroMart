@@ -5,7 +5,7 @@ Sklep internetowy dla firmy sprzedającej elektronikę
 
 ### Autorzy:  
 - **Yan Yazh** - BackEnd  
-- **Oleksandr Revin** - FrontEnd  
+- **Oleksandr Revin** - FrontEnd (https://github.com/niveroo/ElektroMart/tree/dev)
 
 ---
 
