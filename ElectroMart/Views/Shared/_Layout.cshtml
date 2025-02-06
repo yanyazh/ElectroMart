@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -7,7 +9,8 @@
     <link rel="icon" href="~/ElectroMart.png">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/myStore.styles.css" asp-append-version="true" />
+    @* <link rel="stylesheet" href="~/myStore.styles.css" asp-append-version="true" /> *@
+    @* @inject Microsoft.AspNetCore.Identity.SignInManager<IdentityUser> _signInManager *@
 </head>
 <body>
     <header>
@@ -51,30 +54,23 @@
                         <form class="d-flex" role="search">
                             <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                             <button style="margin-right: 10px" class="btn btn-outline-success" type="submit">Search</button>
-
-                            @if (User.Identity.IsAuthenticated)
-                            {
-                                <!-- Logout Form -->
-                                <form asp-action="Logout" asp-controller="Account" method="post" style="display:inline;">
-                                    <button style="margin-right: 10px" class="btn btn-outline-success" type="submit">
-                                        Logout
-                                    </button>
-                                </form>
-                                <button style="margin-right: 10px" class="btn btn-outline-success" type="submit">
-                                    <a asp-action="Login" asp-controller="Account" class="nav-link">Login</a>
-                                </button>
-                            }
-                            else
-                            {
-                                <button style="margin-right: 10px" class="btn btn-outline-success" type="submit">
-                                    <a asp-action="Login" asp-controller="Account" class="nav-link">Login</a>
-                                </button>
-                                <button style="margin-right: 10px" class="btn btn-outline-success" type="submit">
-                                    <a asp-action="Register" asp-controller="Account" class="nav-link">Register</a>
-                                </button>
-                            }
                         </form>
+
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-outline-danger" style="margin-right: 10px">Logout</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <a asp-action="Login" asp-controller="Account" class="btn btn-outline-success" style="margin-right: 10px">Login</a>
+                            <a asp-action="Register" asp-controller="Account" class="btn btn-outline-success" style="margin-right: 10px">Register</a>
+                        }
+
                     </div>
+
 
 
                 </div>
