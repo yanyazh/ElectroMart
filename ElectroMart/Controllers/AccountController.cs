@@ -78,27 +78,27 @@ namespace myStore.Controllers
         }
 
         // POST: Account/Login (API)
-        [HttpPost("api/account/login")]
-        public async Task<IActionResult> LoginApi([FromBody] LoginViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var user = await _userManager.FindByEmailAsync(model.Email);
-                if (user != null)
-                {
-                    var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+        //[HttpPost("api/account/login")]
+        //public async Task<IActionResult> LoginApi([FromBody] LoginViewModel model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var user = await _userManager.FindByEmailAsync(model.Email);
+        //        if (user != null)
+        //        {
+        //            var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
 
-                    if (result.Succeeded)
-                    {
-                        var token = await GenerateJwtToken(user);
-                        return Ok(new { token });
-                    }
-                }
+        //            if (result.Succeeded)
+        //            {
+        //                var token = await GenerateJwtToken(user);
+        //                return Ok(new { token });
+        //            }
+        //        }
 
-                return BadRequest("Invalid login attempt.");
-            }
-            return BadRequest(ModelState);
-        }
+        //        return BadRequest("Invalid login attempt.");
+        //    }
+        //    return BadRequest(ModelState);
+        //}
 
         // POST: Account/Logout
         [HttpPost]

@@ -22,44 +22,45 @@ namespace myStore.Controllers
             _userManager = userManager;
         }
 
-        [HttpPost("AddToCart")]
-        public async Task<IActionResult> AddToCart(int productId, int quantity)
+        public class AddToCartRequest
         {
-            Console.WriteLine("alo blat");
+            public int ProductId { get; set; }
+            public int Quantity { get; set; }
+        }
 
-            //var USERID = "001be9bb-292c-49cb-8741-e4edcfcd926b";
+        [HttpPost("AddToCart")]
+        public async Task<IActionResult> AddToCart([FromBody] AddToCartRequest request)
+        {
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                //return Unauthorized();
+                return Unauthorized(new { message = "User is not authenticated." });
             }
 
             var existingCartItem = await _context.Carts
-                .FirstOrDefaultAsync(c => c.UserId == user.Id && c.ProductId == productId);
-                //.FirstOrDefaultAsync(c => c.UserId == USERID && c.ProductId == productId);
+                .FirstOrDefaultAsync(c => c.UserId == user.Id && c.ProductId == request.ProductId);
 
             if (existingCartItem != null)
             {
-                existingCartItem.Quantity += quantity;
+                existingCartItem.Quantity += request.Quantity;
             }
             else
             {
                 var cart = new Cart
                 {
                     UserId = user.Id,
-                    //UserId = USERID,
-                    ProductId = productId,
-                    Quantity = quantity
+                    ProductId = request.ProductId,
+                    Quantity = request.Quantity
                 };
 
                 _context.Carts.Add(cart);
             }
 
-
             await _context.SaveChangesAsync();
 
-            return Ok("Product added");
+            return Ok(new { message = "Product added to cart." });
         }
+
 
         [HttpGet("GetCart")]
         public async Task<IActionResult> GetCart()
@@ -103,5 +104,38 @@ namespace myStore.Controllers
 
             return Ok(new { message = "Product removed from cart successfully" });
         }
+        public class RemoveFromCartRequest
+        {
+            public int ProductId { get; set; }
+        }
+
+
+        [HttpDelete("RemoveFromCartByProductId")]
+        public async Task<IActionResult> RemoveFromCartByProductId([FromBody] RemoveFromCartRequest request)
+        {
+            // Get the current authenticated user
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return Unauthorized(new { message = "User is not authenticated." });
+            }
+
+            // Find the cart item based on product ID and current user
+            var cartItem = await _context.Carts.FirstOrDefaultAsync(c => c.ProductId == request.ProductId && c.UserId == user.Id);
+
+            if (cartItem == null)
+            {
+                return NotFound(new { message = "Product not found in the cart." });
+            }
+
+            _context.Carts.Remove(cartItem);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { message = "Product removed from cart successfully." });
+        }
+
+
+
     }
 }
+

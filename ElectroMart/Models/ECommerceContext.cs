@@ -13,6 +13,9 @@ namespace myStore.Models
         public DbSet<News> NewsArticles { get; set; }
 
         public DbSet<Cart> Carts { get; set; }
+        public DbSet<Orders> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
