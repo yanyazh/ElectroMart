@@ -90,13 +90,18 @@ namespace myStore.Controllers
             return Ok(cartItems);
         }
 
-        [HttpDelete("RemoveFromCart/{cartId}")]
-        public async Task<IActionResult> RemoveFromCart(int cartId)
+        public class RemoveCartItemRequest
         {
-            var cartItem = await _context.Carts.FindAsync(cartId);
+            public int CartId { get; set; }
+        }
+
+        [HttpDelete("RemoveFromCart")]
+        public async Task<IActionResult> RemoveFromCart([FromBody] RemoveCartItemRequest request)
+        {
+            var cartItem = await _context.Carts.FindAsync(request.CartId);
             if (cartItem == null)
             {
-                return NotFound();
+                return NotFound(new { message = "Cart item not found." });
             }
 
             _context.Carts.Remove(cartItem);
@@ -104,6 +109,7 @@ namespace myStore.Controllers
 
             return Ok(new { message = "Product removed from cart successfully" });
         }
+
         public class RemoveFromCartRequest
         {
             public int ProductId { get; set; }
