@@ -49,6 +49,20 @@ namespace myStore.Controllers
                 return BadRequest(new { message = "Your cart is empty. Cannot create an order." });
             }
 
+            // Check if there is enough stock for each product
+            foreach (var cartItem in cartItems)
+            {
+                if (cartItem.Product.Stock <= 0)  // Ensure product stock is not zero or negative
+                {
+                    return BadRequest(new { message = $"Product {cartItem.Product.Name} is out of stock." });
+                }
+
+                if (cartItem.Product.Stock < cartItem.Quantity)  // Ensure there is enough stock for the order
+                {
+                    return BadRequest(new { message = $"Not enough stock for {cartItem.Product.Name}. Available: {cartItem.Product.Stock}, Requested: {cartItem.Quantity}." });
+                }
+            }
+
             // Create a new order and add the cart items as order items
             var order = new Orders
             {
@@ -65,6 +79,12 @@ namespace myStore.Controllers
 
             _context.Orders.Add(order);
 
+            // Reduce stock for each product
+            foreach (var cartItem in cartItems)
+            {
+                cartItem.Product.Stock -= cartItem.Quantity;  // Decrease stock
+            }
+
             // Clear the user's cart after creating the order
             _context.Carts.RemoveRange(cartItems);
 
@@ -72,6 +92,7 @@ namespace myStore.Controllers
 
             return Ok(new { message = "Order created successfully.", OrderId = order.Id });
         }
+
 
         [HttpGet("GetOrders")]
         public async Task<IActionResult> GetOrders()
