@@ -24,5 +24,9 @@
   <ItemGroup>
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
-
+  <ItemGroup>
+    <Compile Remove="Microsoft\**" />
+    <EmbeddedResource Remove="Microsoft\**" />
+    <None Remove="Microsoft\**" />
+  </ItemGroup>
 </Project>
