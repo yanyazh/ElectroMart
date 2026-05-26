@@ -23,9 +23,23 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
     });
 
-// Configure the database context with Identity
-builder.Services.AddDbContext<ECommerceContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+// --- CLOUD CONFIGURATION: DYNAMIC DATABASE ROUTING ---
+var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL");
+
+if (string.IsNullOrEmpty(connectionString))
+{
+    // If running locally, fall back to Microsoft SQL Server Express
+    connectionString = "Server=VOX\\SQLEXPRESS01;Database=ECommerceDB;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=True";
+    builder.Services.AddDbContext<ECommerceContext>(options =>
+        options.UseSqlServer(connectionString));
+}
+else
+{
+    // If deployed on Render, automatically route through PostgreSQL
+    builder.Services.AddDbContext<ECommerceContext>(options =>
+        options.UseNpgsql(connectionString));
+}
+// ------------------------------------------------------
 
 // Add Identity services
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
@@ -40,7 +54,7 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 .AddDefaultTokenProviders();
 
 // Configure JWT Authentication
-var jwtKey = builder.Configuration["Jwt:Key"] ?? "V29ya2V5aW4hTm93VGhpcyIsVGhlIGtleSBpcyBtYWRlIGZvc3RlciBDdWzXcQ=="; // Replace with environment variable or secure storage
+var jwtKey = builder.Configuration["Jwt:Key"] ?? "V29ya2V5aW4hTm93VGhpcyIsVGhlIGtleSBpcyBtYWRlIGZvc3RlciBDdWzXcQ==";
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultScheme = IdentityConstants.ApplicationScheme;
@@ -69,6 +83,7 @@ builder.Services.AddAuthentication(options =>
 });
 
 builder.Services.AddAuthorization();
+
 // Enable CORS (cross-origin resource sharing)
 builder.Services.AddCors(options =>
 {
@@ -116,7 +131,7 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseStaticFiles();
+app.UseStaticFiles(); // Allows files in 'wwwroot' to be accessed via URL
 app.UseRouting();
 
 // Enable CORS
@@ -124,15 +139,13 @@ app.UseCors("AllowAll");
 app.UseAuthentication();  // Use authentication middleware
 app.UseAuthorization();   // Use authorization middleware
 
-// Enable Swagger UI in development
-if (app.Environment.IsDevelopment())
+// Enable Swagger UI in BOTH Development and Cloud Hosting so you can present it easily
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-    });
-}
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+    c.RoutePrefix = "swagger"; // Access it via your-url.com/swagger
+});
 
 app.MapControllerRoute(
     name: "default",
