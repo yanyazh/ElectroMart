@@ -26,6 +26,7 @@ builder.Services.AddControllers()
 // --- CLOUD CONFIGURATION: DYNAMIC DATABASE ROUTING ---
 var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL");
 
+
 if (string.IsNullOrEmpty(connectionString))
 {
     // If running locally, fall back to Microsoft SQL Server Express
