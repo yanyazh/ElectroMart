@@ -35,7 +35,31 @@ if (string.IsNullOrEmpty(connectionString))
 }
 else
 {
-    // If deployed on Render, automatically route through PostgreSQL
+    // If it's a standard cloud format (postgres://), translate it for .NET Npgsql
+    if (connectionString.StartsWith("postgres://") || connectionString.StartsWith("postgresql://"))
+    {
+        // Trim the prefix
+        var rawUri = connectionString.Replace("postgres://", "").Replace("postgresql://", "");
+
+        // Split credentials from the host/database path
+        var authAndHost = rawUri.Split('@');
+        var userInfo = authAndHost[0].Split(':');
+        var hostAndDb = authAndHost[1].Split('/');
+
+        var username = userInfo[0];
+        var password = userInfo[1];
+        var hostAndPort = hostAndDb[0].Split(':');
+        var host = hostAndPort[0];
+        var port = hostAndPort.Length > 1 ? hostAndPort[1] : "5432";
+
+        // Extract database name and clean up any trailing query strings (like ?sslmode=require)
+        var database = hostAndDb[1].Split('?')[0];
+
+        // Format it perfectly into the key/value format .NET requires
+        connectionString = $"Host={host};Port={port};Database={database};Username={username};Password={password};SSL Mode=Require;Trust Server Certificate=True;";
+    }
+
+    // Now Npgsql will accept it perfectly!
     builder.Services.AddDbContext<ECommerceContext>(options =>
         options.UseNpgsql(connectionString));
 }
